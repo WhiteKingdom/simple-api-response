@@ -1,0 +1,19 @@
+{
+    "name": "whiteki/simple-api-response",
+    "description": "简单的封装 api 响应",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "whiteki",
+            "email": "whiteki@qq.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Whiteki\\SimpleApiResponse\\": "src"
+        }
+    }
+}
