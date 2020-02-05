@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Models\DummyModel;
+
+class DummyClass
+{
+    /**
+     * @var DummyModel
+     */
+    private $DummyValue;
+
+    public function __construct(DummyModel $DummyValue)
+    {
+        $this->DummyValue = $DummyValue;
+    }
+}

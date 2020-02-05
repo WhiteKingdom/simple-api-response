@@ -4,6 +4,11 @@
 
 方便个人使用
 
+## Include
+- make:api-controller
+- make:repository
+- make:service
+
 ## Installing
 
 ```shell
@@ -19,8 +24,7 @@ $app->singleton(
     \Whiteki\SimpleApiResponse\Exceptions\Handler::class
 );
 ```
-2. 在 controller 里添加 use 
+2. 在 controller 里 use trait
 ```php
  use \Whiteki\SimpleApiResponse\ApiResponse;
 ```
-

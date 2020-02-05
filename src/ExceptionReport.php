@@ -3,13 +3,13 @@
 namespace Whiteki\SimpleApiResponse;
 
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -56,7 +56,8 @@ class ExceptionReport
         UnauthorizedHttpException::class => ['未登录或登录状态失效', 422],
         NotFoundHttpException::class => ['没有找到该页面', 404],
         MethodNotAllowedHttpException::class => ['访问方式不正确', 405],
-        QueryException::class => ['参数错误', 401],
+        QueryException::class => ['查询参数错误', 400],
+        MassAssignmentException::class => ['批量分配异常', 422],
     ];
 
     public function register($className, callable $callback)
@@ -69,11 +70,6 @@ class ExceptionReport
      */
     public function shouldReturn()
     {
-        //只有请求包含是json或者ajax请求时才有效
-//        if (! ($this->request->wantsJson() || $this->request->ajax())){
-//
-//            return false;
-//        }
         foreach (array_keys($this->doReport) as $report) {
             if ($this->exception instanceof $report) {
                 $this->report = $report;
@@ -99,8 +95,12 @@ class ExceptionReport
     public function report()
     {
         if ($this->exception instanceof ValidationException) {
-            $error = Arr::first($this->exception->errors());
-            return $this->failed(Arr::first($error), $this->exception->status);
+            $message = [];
+            $errors = $this->exception->errors();
+            array_walk_recursive($errors, function ($v) use (&$message) {
+                $message[] = $v;
+            });
+            return $this->failed($message, $this->exception->status);
         }
         $message = $this->doReport[$this->report];
         return $this->failed($message[0], $message[1]);

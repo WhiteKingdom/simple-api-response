@@ -15,5 +15,12 @@
         "psr-4": {
             "Whiteki\\SimpleApiResponse\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Whiteki\\SimpleApiResponse\\ApiResponseServiceProvider"
+            ]
+        }
     }
 }
