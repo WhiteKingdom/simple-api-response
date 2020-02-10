@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use App\Models\DummyModel;
+use DummyModelNamespace;
 
 class DummyClass
 {

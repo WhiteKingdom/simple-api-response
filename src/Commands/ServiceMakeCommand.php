@@ -19,6 +19,13 @@ class ServiceMakeCommand extends GeneratorCommand
     protected $description = 'Create a service';
 
     /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
+    protected $type = 'Service';
+
+    /**
      * Get the stub file for the generator.
      *
      * @return string

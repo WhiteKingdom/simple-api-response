@@ -19,6 +19,13 @@ class RepositoryMakeCommand extends GeneratorCommand
     protected $description = 'Create a repository';
 
     /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
+    protected $type = 'Repository';
+
+    /**
      * Get the stub file for the generator.
      *
      * @return string
@@ -49,13 +56,15 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     protected function replaceNamespace(&$stub, $name)
     {
-        $dummyModel = substr($this->getNameInput(),0,-10);
+        $dummyModel = $this->getNameInput();
+        $dummyModelNamespace = 'App\\Models\\' . $dummyModel;
+        $temp = explode('\\', $dummyModelNamespace);
+        $dummyModel = array_pop($temp);
         $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace', 'NamespacedDummyUserModel','DummyModel','DummyValue'],
-            [$this->getNamespace($name), $this->rootNamespace(), config('auth.providers.users.model'),$dummyModel,lcfirst($dummyModel)],
+            ['DummyNamespace', 'DummyModelNamespace', 'DummyModel', 'DummyValue'],
+            [$this->getNamespace($name), $dummyModelNamespace, $dummyModel, lcfirst($dummyModel)],
             $stub
         );
-
         return $this;
     }
 }
