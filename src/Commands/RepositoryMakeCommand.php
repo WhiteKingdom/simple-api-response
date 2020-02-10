@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Whiteki\SimpleApiResponse\Commands;
 
 class RepositoryMakeCommand extends GeneratorCommand
 {

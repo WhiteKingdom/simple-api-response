@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Whiteki\SimpleApiResponse\Commands;
 
 abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
 {
