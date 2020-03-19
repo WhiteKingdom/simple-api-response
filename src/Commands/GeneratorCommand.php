@@ -22,7 +22,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
                 !$this->option('force')) &&
             $this->alreadyExists($getNameInput)) {
             $this->error($this->type . ' already exists!');
-
             return false;
         }
         // Next, we will generate the path to the location where this class' file should get
@@ -31,5 +30,6 @@ abstract class GeneratorCommand extends \Illuminate\Console\GeneratorCommand
         $this->makeDirectory($path);
         $this->files->put($path, $this->sortImports($this->buildClass($name)));
         $this->info($getNameInput . ' created successfully.');
+        return true;
     }
 }

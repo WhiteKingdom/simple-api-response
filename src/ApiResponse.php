@@ -2,7 +2,7 @@
 
 namespace Whiteki\SimpleApiResponse;
 
-use Illuminate\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 
 trait ApiResponse
@@ -37,7 +37,7 @@ trait ApiResponse
      */
     public function respond($data, $header = [])
     {
-        return app(ResponseFactory::class)->json($data, $this->getStatusCode(), $header);
+        return new JsonResponse($data, $this->getStatusCode(), $header);
     }
 
     /**
