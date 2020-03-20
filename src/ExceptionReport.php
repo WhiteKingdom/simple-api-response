@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\MassAssignmentException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -58,6 +59,7 @@ class ExceptionReport
         MethodNotAllowedHttpException::class => ['访问方式不正确', 405],
         QueryException::class => ['查询参数错误', 400],
         MassAssignmentException::class => ['批量分配异常', 422],
+        ThrottleRequestsException::class => ['太多请求', 429],
     ];
 
     public function register($className, callable $callback)
