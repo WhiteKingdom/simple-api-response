@@ -52,7 +52,7 @@ class ExceptionReport
     public $doReport = [
         AuthenticationException::class => ['未授权', 401],
         ModelNotFoundException::class => ['该模型未找到', 404],
-        AuthorizationException::class => ['没有此权限', 403],
+        AuthorizationException::class => ['没有权限', 403],
         ValidationException::class => [],
         UnauthorizedHttpException::class => ['未登录或登录状态失效', 422],
         NotFoundHttpException::class => ['没有找到该页面', 404],
@@ -74,6 +74,9 @@ class ExceptionReport
     {
         foreach (array_keys($this->doReport) as $report) {
             if ($this->exception instanceof $report) {
+                if ($this->exception->getCode()) {
+                    $this->doReport[$report] = [$this->exception->getMessage(), $this->exception->getCode()];
+                }
                 $this->report = $report;
                 return true;
             }
