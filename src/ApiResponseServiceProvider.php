@@ -29,15 +29,15 @@ class ApiResponseServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (!$this->app['config']->get('app.debug')) {
+            return;
+        }
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ApiControllerMakeCommand::class,
                 RepositoryMakeCommand::class,
                 ServiceMakeCommand::class
             ]);
-        }
-        if (!$this->app['config']->get('app.debug')) {
-            return;
         }
         DB::listen(function (QueryExecuted $query) {
             $sqlWithPlaceholders = str_replace(['%', '?'], ['%%', '%s'], $query->sql);
@@ -60,10 +60,10 @@ class ApiResponseServiceProvider extends ServiceProvider
     private function formatDuration($seconds)
     {
         if ($seconds < 0.001) {
-            return round($seconds * 1000000).'μs';
+            return round($seconds * 1000000) . 'μs';
         } elseif ($seconds < 1) {
-            return round($seconds * 1000, 2).'ms';
+            return round($seconds * 1000, 2) . 'ms';
         }
-        return round($seconds, 2).'s';
+        return round($seconds, 2) . 's';
     }
 }
