@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Events\QueryExecuted;
 use Whiteki\SimpleApiResponse\Commands\ServiceMakeCommand;
-use Whiteki\SimpleApiResponse\Commands\RepositoryMakeCommand;
-use Whiteki\SimpleApiResponse\Commands\ApiControllerMakeCommand;
 
 class ApiResponseServiceProvider extends ServiceProvider
 {
@@ -29,24 +27,21 @@ class ApiResponseServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->app['config']->get('app.debug')) {
-            return;
+        if ($this->app['config']->get('app.debug')) {
+            if ($this->app->runningInConsole()) {
+                $this->commands([
+                    ServiceMakeCommand::class
+                ]);
+            }
+            DB::listen(function (QueryExecuted $query) {
+                $sqlWithPlaceholders = str_replace(['%', '?'], ['%%', '%s'], $query->sql);
+                $bindings = $query->connection->prepareBindings($query->bindings);
+                $pdo = $query->connection->getPdo();
+                $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
+                $duration = $this->formatDuration($query->time / 1000);
+                Log::channel('sqllog')->debug(sprintf('[%s] %s | %s: %s', $duration, $realSql, request()->method(), request()->getRequestUri()));
+            });
         }
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                ApiControllerMakeCommand::class,
-                RepositoryMakeCommand::class,
-                ServiceMakeCommand::class
-            ]);
-        }
-        DB::listen(function (QueryExecuted $query) {
-            $sqlWithPlaceholders = str_replace(['%', '?'], ['%%', '%s'], $query->sql);
-            $bindings = $query->connection->prepareBindings($query->bindings);
-            $pdo = $query->connection->getPdo();
-            $realSql = vsprintf($sqlWithPlaceholders, array_map([$pdo, 'quote'], $bindings));
-            $duration = $this->formatDuration($query->time / 1000);
-            Log::channel('sqllog')->debug(sprintf('[%s] %s | %s: %s', $duration, $realSql, request()->method(), request()->getRequestUri()));
-        });
     }
 
 
