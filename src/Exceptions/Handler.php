@@ -2,7 +2,7 @@
 
 namespace Whiteki\SimpleApiResponse\Exceptions;
 
-use Exception;
+use Throwable;
 use Whiteki\SimpleApiResponse\ExceptionReport;
 use App\Exceptions\Handler as ExceptionHandler;
 
@@ -11,11 +11,11 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      * @param \Illuminate\Http\Request $request
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return mixed|\Symfony\Component\HttpFoundation\Response
-     * @throws Exception
+     * @throws Throwable
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
         $accepts = $request->getAcceptableContentTypes();
         if (in_array('application/json', $accepts)) {

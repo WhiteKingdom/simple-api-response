@@ -7,8 +7,6 @@
 方便个人使用
 
 ## Include
-- make:api-controller
-- make:repository
 - make:service
 
 ## Installing
@@ -37,5 +35,5 @@ use \Whiteki\SimpleApiResponse\ApiResponse;
     'path' => storage_path('logs/sql.log'),
     'level' => 'debug',
     'days' => 14,
-]
+];
 ```
