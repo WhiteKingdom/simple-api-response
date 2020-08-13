@@ -53,7 +53,7 @@ trait ApiResponse
         }
         $status = [
             'status' => $status,
-            'code' => $this->statusCode
+            'code'   => $this->statusCode
         ];
 
         $data = array_merge($status, $data);

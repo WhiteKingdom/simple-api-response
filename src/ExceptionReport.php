@@ -2,7 +2,7 @@
 
 namespace Whiteki\SimpleApiResponse;
 
-use Exception;
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
@@ -20,7 +20,7 @@ class ExceptionReport
     use ApiResponse;
 
     /**
-     * @var Exception
+     * @var Throwable
      */
     public $exception;
     /**
@@ -36,9 +36,9 @@ class ExceptionReport
     /**
      * ExceptionReport constructor.
      * @param Request $request
-     * @param Exception $exception
+     * @param Throwable $exception
      */
-    public function __construct(Request $request, Exception $exception)
+    public function __construct(Request $request, Throwable $exception)
     {
         $this->request = $request;
         $this->exception = $exception;
@@ -86,10 +86,10 @@ class ExceptionReport
     }
 
     /**
-     * @param Exception $e
+     * @param Throwable $e
      * @return static
      */
-    public static function make(Exception $e)
+    public static function make(Throwable $e)
     {
         return new static(\request(), $e);
     }
